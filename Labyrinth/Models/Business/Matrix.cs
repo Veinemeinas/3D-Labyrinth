@@ -1,6 +1,6 @@
-﻿using Labyrinth.Models;
+﻿using Labyrinth.Services;
 
-namespace Labyrinth.Services
+namespace Labyrinth.Models.Business
 {
     internal static class Matrix
     {
@@ -28,29 +28,26 @@ namespace Labyrinth.Services
             throw new Exception("Starting point \"D\" don't find");
         }
 
-        public static List<Models.Path> GetMyTrips(List<List<List<char>>> matrix, Point start, int counter = 0)
+        public static List<Path> GetMyTrips(List<List<List<char>>> matrix, Point start, int counter = 0)
         {
             matrix[start.Z][start.X][start.Y] = ' ';
-            var result = new List<Models.Path>();
+            var result = new List<Path>();
 
             Console.CursorVisible = false;
-
-            Console.WriteLine($"Layer: {start.Z + 1}");
-            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"Layer: {start.Z + 1}\n");
             matrix[start.Z].PrintLayer();
-            Thread.Sleep(40);
+            Thread.Sleep(30);
             Console.SetCursorPosition(0, 0);
 
 
             if (matrix.IsPontExit(start))
             {
                 Console.WriteLine("\nExit Found.");
-                Console.CursorVisible = false;
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
                 Console.Clear();
 
-                result.Add(new Models.Path() { ExitMatrix = matrix, StepCounter = counter });
+                result.Add(new Path() { ExitMatrix = matrix, StepCounter = counter });
                 return result;
             }
 

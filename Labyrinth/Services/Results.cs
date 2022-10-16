@@ -1,4 +1,6 @@
-﻿namespace Labyrinth.Models.Business
+﻿using Path = Labyrinth.Models.Path;
+
+namespace Labyrinth.Services
 {
     internal static class Results
     {
@@ -32,7 +34,7 @@
             else
             {
                 var middle = counter / 2;
-                return ordered[middle].StepCounter;
+                return (ordered[middle - 1].StepCounter + ordered[middle].StepCounter) / 2;
             }
         }
     }
