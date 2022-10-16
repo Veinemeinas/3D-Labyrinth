@@ -2,11 +2,11 @@
 {
     internal class FileReader
     {
-        public async Task<List<List<List<char>>>> GetLabyrinth(string fileName)
+        public static async Task<List<List<List<char>>>> GetLabyrinth(string fileName)
         {
             if (!File.Exists(fileName))
             {
-                throw new FileNotFoundException($"File \"{fileName}\" not found!");
+                Console.WriteLine($"File \"{fileName}\" not found!");
             }
 
             var labyrinthLines = await File.ReadAllLinesAsync(fileName);

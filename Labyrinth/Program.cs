@@ -2,8 +2,7 @@
 using Labyrinth.Models.Business;
 using Labyrinth.Services;
 
-FileReader fileReader = new FileReader();
-var labyrinth = await fileReader.GetLabyrinth("lab.txt");
+var labyrinth = await FileReader.GetLabyrinth("lab.txt");
 
 Point startingPoint = labyrinth.GetStartingPoint();
 
