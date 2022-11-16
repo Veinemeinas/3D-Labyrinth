@@ -30,41 +30,41 @@ namespace Labyrinth.Models.Business
 
         public static List<Path> GetMyTrips(List<List<List<char>>> matrix, Point start, int counter = 0)
         {
-            matrix[start.Z][start.X][start.Y] = ' ';
-            var result = new List<Path>();
 
+            var result = new List<Path>();
+            var newMatrix = GetMatrix(matrix, start);
             Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Layer: {start.Z + 1}\n");
-            matrix[start.Z].PrintLayer();
+            newMatrix[start.Z].PrintLayer();
             Thread.Sleep(30);
             Console.SetCursorPosition(0, 0);
 
 
-            if (matrix.IsPontExit(start))
+            if (newMatrix.IsPontExit(start))
             {
                 Console.WriteLine("\nExit Found.");
                 Thread.Sleep(2000);
                 Console.Clear();
 
-                result.Add(new Path() { ExitMatrix = matrix, StepCounter = counter });
+                result.Add(new Path() { ExitMatrix = newMatrix, StepCounter = counter });
                 return result;
             }
 
             counter++;
 
             // To the left.
-            if (matrix[start.Z][start.X][start.Y - 1] == '.') { result.AddRange(GetMyTrips(matrix, new Point() { X = start.X, Y = start.Y - 1, Z = start.Z }, counter)); }
+            if (newMatrix[start.Z][start.X][start.Y - 1] == '.') { result.AddRange(GetMyTrips(newMatrix, new Point() { X = start.X, Y = start.Y - 1, Z = start.Z }, counter)); }
             // To the forward.
-            if (matrix[start.Z][start.X - 1][start.Y] == '.') { result.AddRange(GetMyTrips(matrix, new Point() { X = start.X - 1, Y = start.Y, Z = start.Z }, counter)); }
+            if (newMatrix[start.Z][start.X - 1][start.Y] == '.') { result.AddRange(GetMyTrips(newMatrix, new Point() { X = start.X - 1, Y = start.Y, Z = start.Z }, counter)); }
             // To the right.
-            if (matrix[start.Z][start.X][start.Y + 1] == '.') { result.AddRange(GetMyTrips(matrix, new Point() { X = start.X, Y = start.Y + 1, Z = start.Z }, counter)); }
+            if (newMatrix[start.Z][start.X][start.Y + 1] == '.') { result.AddRange(GetMyTrips(newMatrix, new Point() { X = start.X, Y = start.Y + 1, Z = start.Z }, counter)); }
             // To the back.
-            if (matrix[start.Z][start.X + 1][start.Y] == '.') { result.AddRange(GetMyTrips(matrix, new Point() { X = start.X + 1, Y = start.Y, Z = start.Z }, counter)); }
+            if (newMatrix[start.Z][start.X + 1][start.Y] == '.') { result.AddRange(GetMyTrips(newMatrix, new Point() { X = start.X + 1, Y = start.Y, Z = start.Z }, counter)); }
             // To the top.
-            if (matrix[start.Z + 1][start.X][start.Y] == '.') { result.AddRange(GetMyTrips(matrix, new Point() { X = start.X, Y = start.Y, Z = start.Z + 1 }, counter)); }
+            if (newMatrix[start.Z + 1][start.X][start.Y] == '.') { result.AddRange(GetMyTrips(newMatrix, new Point() { X = start.X, Y = start.Y, Z = start.Z + 1 }, counter)); }
             // To the buttom.
-            if (matrix[start.Z - 1][start.X][start.Y] == '.') { result.AddRange(GetMyTrips(matrix, new Point() { X = start.X, Y = start.Y, Z = start.Z - 1 }, counter)); }
+            if (newMatrix[start.Z - 1][start.X][start.Y] == '.') { result.AddRange(GetMyTrips(newMatrix, new Point() { X = start.X, Y = start.Y, Z = start.Z - 1 }, counter)); }
 
             return result;
         }
@@ -77,6 +77,26 @@ namespace Labyrinth.Models.Business
             }
 
             return false;
+        }
+
+        private static List<List<List<char>>> GetMatrix(List<List<List<char>>> matrix, Point point)
+        {
+            List<List<List<char>>> newMap = new List<List<List<char>>>();
+
+            for (int i = 0; i < matrix.Count; i++)
+            {
+                List<List<char>> newMapLayer = new List<List<char>>();
+                for (int j = 0; j < matrix[0].Count; j++)
+                {
+                    List<char> mapLine = new List<char>();
+                    mapLine.AddRange(matrix[i][j]);
+                    newMapLayer.Add(mapLine);
+                }
+                newMap.Add(newMapLayer);
+            }
+            newMap[point.Z][point.X][point.Y] = ' ';
+
+            return newMap;
         }
     }
 }
